@@ -9,19 +9,26 @@ namespace Lab2
         {
 
             //IsBalanced("{ int a = new int[ ] ( ( ) ) }");
-
+            Console.WriteLine(Evaluate("5 3 11 + -"));
             Evaluate("5 3 11 + -");
 
         }
 
 
-
+        //"{()}{}"
         public static bool IsBalanced(string s)
         {
+            if(s.Length < 2)
+            {
+                return false;
+            }
+
             Stack<char> stack = new Stack<char>();
 
             foreach( char c in s)
             {
+
+
                 // If opening symbol, then push onto stack
                 if ( c == '{' || c=='<' || c=='[' || c=='(' )
                 {
@@ -63,7 +70,28 @@ namespace Lab2
         {
             // do the matching
 
-            return true;
+            if (open == '(' && close == ')') {
+                return true;
+            }
+
+            if (open == '<' && close == '>')
+            {
+                return true;
+            }
+
+            if (open == '[' && close == ']')
+            {
+                return true;
+            }
+
+            if (open == '{' && close == '}')
+            {
+                return true;
+            }
+
+
+
+            return false;
         }
 
         // Evaluate("5 3 11 + -")	// returns -9
@@ -81,11 +109,47 @@ namespace Lab2
                 // If token is an integer
                 // Push on stack
 
+            foreach(var token in tokens)
+            {
+                if(int.TryParse(token, out int value))
+                {
+                    stack.Push(value);
+                }
+
+                if(token == "+" || token == "-" || token == "*" || token == "/")
+                {
+                    var num1 = stack.Pop();
+                    var num2 = stack.Pop();
+
+                    if(token == "+")
+                    {
+                        stack.Push(num1 + num2);
+                    }
+
+                    if (token == "-")
+                    {
+                        stack.Push(num2 - num1);
+                    }
+
+                    if (token == "*")
+                    {
+                        stack.Push(num1 * num2);
+                    }
+
+                    if (token == "/")
+                    {
+                        stack.Push(num2 / num1);
+                    }
+                }
+            } 
+
+
                 // If token is an operator
                     // Pop twice and save both values
                     // (if you can't pop twice, then return null)
                     // Perform operation on 2 values (in the correct order)
                     // Push the result on to stack
+
 
 
             if( stack.Count != 1)
