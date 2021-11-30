@@ -18,47 +18,65 @@ namespace Lab2
         //"{()}{}"
         public static bool IsBalanced(string s)
         {
-            if(s.Length < 2)
+           
+
+            Stack<char> stack = new Stack<char>();
+            
+            if (stack.Count == 1)
             {
+                if (int.TryParse(s, out int value))
+                {
+                    return true;
+                }
                 return false;
             }
 
-            Stack<char> stack = new Stack<char>();
-
-            foreach( char c in s)
+            else
             {
-
-
-                // If opening symbol, then push onto stack
-                if ( c == '{' || c=='<' || c=='[' || c=='(' )
+                foreach (char c in s)
                 {
-                    stack.Push(c);
-                }
 
-                // If closing symbol, then see if it matches the top
-                else if (c == '}' || c == '>' || c == ']' || c == ')')
-                {
-                    if( Matches(stack.Peek(), c) )
+
+                    // If opening symbol, then push onto stack
+                    if (c == '{' || c == '<' || c == '[' || c == '(')
                     {
-                        stack.Pop();
+                        stack.Push(c);
                     }
+
+                    // If closing symbol, then see if it matches the top
+                    else if (c == '}' || c == '>' || c == ']' || c == ')')
+                    {
+                        if (stack.Count == 0)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            if (Matches(stack.Peek(), c))
+                            {
+                                stack.Pop();
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+
+                    }
+
+                    // If any other character, then continue/ignore it.
                     else
                     {
-                        return false;
+                        //continue;
                     }
                 }
 
-                // If any other character, then continue/ignore it.
-                else
-                {
-                    //continue;
-                }
             }
 
             // If stack is empty, return true
             // else return false
 
-            if( stack.Count == 0)
+            if ( stack.Count == 0)
             {
                 return true;
             }
